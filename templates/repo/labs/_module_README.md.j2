@@ -1,0 +1,63 @@
+# Lab: {{ module.title | default(module.id) }}
+
+**Module ID:** `{{ module.id }}`
+**Duration:** ~{{ module.duration_minutes }} minutes
+
+## Objective
+
+{{ module.objective }}
+
+## Prerequisites
+
+{% if module.depends_on %}
+You should have completed:
+{% for dep in module.depends_on %}
+- Module `{{ dep }}`
+{% endfor %}
+{% else %}
+No prerequisites. This is a starting module.
+{% endif %}
+
+## Tasks
+
+{% for deliverable in module.deliverables %}
+### Task {{ loop.index }}: Create `{{ deliverable }}`
+
+**Instructions:**
+
+1. Create the file at path: `{{ deliverable }}`
+2. Implement according to module objectives
+3. Test your implementation
+4. Verify completeness
+
+{% endfor %}
+
+## Expected Deliverables
+
+{% for deliverable in module.deliverables %}
+- [ ] `{{ deliverable }}`
+{% endfor %}
+
+## Verification
+
+Run the following to check your work:
+
+```bash
+# Check file existence
+ls -la {{ module.deliverables[0] | dirname }}
+
+# Validate structure (if applicable)
+workshopforge ai check
+```
+
+## Next Steps
+
+{% if module.next_module %}
+Continue to module `{{ module.next_module }}`
+{% else %}
+Review your work and prepare for instructor feedback.
+{% endif %}
+
+---
+
+*Generated from spec: `modules.yml#{{ module.id }}`*

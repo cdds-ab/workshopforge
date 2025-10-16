@@ -1,0 +1,49 @@
+# {{ workshop.title }} - Course Guide
+
+## Learning Outcomes
+
+By completing this workshop, participants will:
+
+{% for module in modules %}
+- {{ module.objective }}
+{% endfor %}
+
+## Prerequisites
+
+- Basic understanding of {{ profile.domain }}
+- Access to a development environment
+{% if workshop.policy.student_ai_usage != "forbidden" %}
+- (Optional) AI assistant tools for learning support
+{% endif %}
+
+## Schedule
+
+Total time: {{ (workshop.duration.groups * workshop.duration.sessions_per_group * workshop.duration.session_minutes) }} minutes
+
+{% for module in modules %}
+### Session {{ loop.index }}: {{ module.title | default(module.id) }}
+- **Duration:** {{ module.duration_minutes }} min
+- **Goal:** {{ module.objective }}
+- **Activities:**
+{% for deliverable in module.deliverables %}
+  - Work on `{{ deliverable }}`
+{% endfor %}
+
+{% endfor %}
+
+## Getting Started
+
+1. Review the README for structure and policies
+2. Start with the first lab in `labs/`
+3. Follow module sequence (check dependencies)
+4. Refer to instructor materials if stuck
+
+## Support
+
+- Check instructor notes in `instructor/notes/`
+- Review reference implementations in `reference/` (instructor access)
+- Ask questions during workshop sessions
+
+---
+
+*This workshop was generated using workshopforge. All materials are derived from validated specifications.*

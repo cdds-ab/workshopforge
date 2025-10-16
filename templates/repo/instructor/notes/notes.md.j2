@@ -1,0 +1,80 @@
+# Instructor Notes: {{ workshop.title }}
+
+## Preparation Checklist
+
+- [ ] Review all module objectives
+- [ ] Verify reference solutions work
+- [ ] Prepare demo environment
+- [ ] Test estimated timing for each module
+- [ ] Prepare backup materials for fast/slow learners
+
+## Module-by-Module Guidance
+
+{% for module in modules %}
+### {{ loop.index }}. {{ module.title | default(module.id) }} ({{ module.duration_minutes }} min)
+
+**Objective:** {{ module.objective }}
+
+**Teaching Tips:**
+- Start with a brief overview (5 min)
+- Allow hands-on time for deliverables
+- Circulate to answer questions
+- Reserve time for wrap-up and Q&A
+
+**Common Issues:**
+- Watch for students getting stuck on [specific topics]
+- Be ready to explain [key concepts]
+- Have reference solution ready in `reference/{{ module.id }}/`
+
+**Deliverables to review:**
+{% for deliverable in module.deliverables %}
+- `{{ deliverable }}`
+{% endfor %}
+
+{% if module.depends_on %}
+**Prerequisites:** Ensure students completed {{ module.depends_on | join(", ") }}
+{% endif %}
+
+---
+
+{% endfor %}
+
+## Timing and Pacing
+
+- **Total workshop time:** {{ (workshop.duration.groups * workshop.duration.sessions_per_group * workshop.duration.session_minutes) }} minutes
+- **Module time:** {{ modules | sum(attribute='duration_minutes') }} minutes
+- **Buffer:** {{ (workshop.duration.groups * workshop.duration.sessions_per_group * workshop.duration.session_minutes) - (modules | sum(attribute='duration_minutes')) }} minutes (breaks, Q&A, flexibility)
+
+## Student AI Policy Enforcement
+
+Policy: **{{ workshop.policy.student_ai_usage }}**
+
+{% if workshop.policy.student_ai_usage == "forbidden" %}
+- Monitor for AI tool usage
+- Explain rationale: hands-on mastery
+- Provide alternatives if students struggle
+{% elif workshop.policy.student_ai_usage == "allowed" %}
+- Encourage thoughtful AI use
+- Remind students to understand, not just copy
+- Discuss AI limitations and verification needs
+{% else %}
+- Integrate AI tools into exercises
+- Demonstrate effective prompting
+- Discuss results and learning from AI outputs
+{% endif %}
+
+## Troubleshooting
+
+### Environment Setup Issues
+- Have pre-configured environments as backup
+- Document common setup errors
+- Allocate extra time for first module
+
+### Content Updates
+- Use `workshopforge ai apply` to regenerate materials
+- Always run `workshopforge ai check` after changes
+- Verify compliance before delivery
+
+---
+
+*Instructor materials are confidential. Do not share with students.*

@@ -1,0 +1,11 @@
+domain: Python programming
+materials:
+  slides_format: pdf
+  deck_engine: revealjs
+student_pack:
+  include_solutions: false
+  redactions:
+    - instructor/**
+    - reference/**
+ci:
+  enable_basic_checks: true

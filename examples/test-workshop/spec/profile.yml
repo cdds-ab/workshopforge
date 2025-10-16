@@ -1,0 +1,11 @@
+ci:
+  enable_basic_checks: true
+domain: software development
+materials:
+  deck_engine: revealjs
+  slides_format: pdf
+student_pack:
+  include_solutions: false
+  redactions:
+  - instructor/**
+  - reference/**

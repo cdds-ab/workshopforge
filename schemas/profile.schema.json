@@ -1,0 +1,72 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://workshopforge.dev/schemas/profile.schema.json",
+  "title": "Workshop Profile",
+  "description": "Generation and delivery profile settings",
+  "type": "object",
+  "required": ["domain"],
+  "properties": {
+    "domain": {
+      "type": "string",
+      "description": "Technical domain or focus area"
+    },
+    "materials": {
+      "type": "object",
+      "properties": {
+        "slides_format": {
+          "type": "string",
+          "enum": ["pdf", "html", "pptx"],
+          "default": "pdf",
+          "description": "Output format for slide decks"
+        },
+        "deck_engine": {
+          "type": "string",
+          "enum": ["revealjs", "marp", "none"],
+          "default": "revealjs",
+          "description": "Slide generation engine"
+        }
+      }
+    },
+    "student_pack": {
+      "type": "object",
+      "properties": {
+        "include_solutions": {
+          "type": "boolean",
+          "default": false,
+          "description": "Include solution files in student materials"
+        },
+        "redactions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": ["instructor/**", "reference/**"],
+          "description": "File patterns to exclude from student pack"
+        }
+      }
+    },
+    "ci": {
+      "type": "object",
+      "properties": {
+        "enable_basic_checks": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable CI checks for spec validation"
+        },
+        "platforms": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["github", "gitlab", "azure-devops"]
+          },
+          "description": "CI platforms to generate configs for"
+        }
+      }
+    },
+    "quality": {
+      "type": "object",
+      "description": "Quality policy overrides (see policy engine)",
+      "additionalProperties": true
+    }
+  }
+}

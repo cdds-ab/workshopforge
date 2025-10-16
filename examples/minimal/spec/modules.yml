@@ -1,0 +1,19 @@
+modules:
+  - id: intro-python
+    title: Introduction to Python
+    objective: Write and execute basic Python programs using variables, functions, and control flow
+    deliverables:
+      - labs/intro-python/README.md
+      - labs/intro-python/hello.py
+      - labs/intro-python/calculator.py
+    duration_minutes: 90
+
+  - id: data-structures
+    title: Python Data Structures
+    objective: Use lists, dictionaries, and tuples to organize and manipulate data effectively
+    deliverables:
+      - labs/data-structures/README.md
+      - labs/data-structures/collections.py
+    duration_minutes: 90
+    depends_on:
+      - intro-python

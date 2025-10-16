@@ -1,0 +1,48 @@
+# {{ module.title | default(module.id) }}
+
+**Module:** `{{ module.id }}`
+**Duration:** {{ module.duration_minutes }} minutes
+
+## Learning Objective
+
+{{ module.objective }}
+
+## Background
+
+<!-- Add context, theory, or prerequisite knowledge here -->
+
+## Instructions
+
+{% for deliverable in module.deliverables %}
+### Step {{ loop.index }}: {{ deliverable | basename }}
+
+**Path:** `{{ deliverable }}`
+
+<!-- Detailed instructions for this deliverable -->
+
+1. Step-by-step guidance
+2. Code examples if applicable
+3. Expected output or behavior
+
+{% endfor %}
+
+## Testing Your Work
+
+```bash
+# Verify your implementation
+# Add appropriate test commands
+```
+
+## Challenges (Optional)
+
+- [ ] Extension task 1
+- [ ] Extension task 2
+
+## Resources
+
+- [Relevant documentation](#)
+- [Related concepts](#)
+
+---
+
+*Module spec: `modules.yml#{{ module.id }}`*

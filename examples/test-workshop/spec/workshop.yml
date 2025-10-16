@@ -1,0 +1,17 @@
+audience: Developers learning WorkshopForge
+branding:
+  org: Your Organization
+  theme: default
+duration:
+  groups: 1
+  session_minutes: 60
+  sessions_per_group: 3
+id: example-workshop
+outputs:
+  handouts: true
+  slides: true
+policy:
+  license: CC-BY-4.0
+  student_ai_usage: allowed
+title: Example Workshop
+version: 1.0.0

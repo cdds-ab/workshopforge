@@ -1,0 +1,26 @@
+modules:
+- deliverables:
+  - labs/setup/README.md
+  - labs/setup/verify.sh
+  duration_minutes: 30
+  id: setup
+  objective: Set up development environment and verify installation
+  title: Environment Setup
+- deliverables:
+  - labs/fundamentals/README.md
+  - labs/fundamentals/example.py
+  depends_on:
+  - setup
+  duration_minutes: 60
+  id: fundamentals
+  objective: Understand core concepts and implement basic examples
+  title: Core Fundamentals
+- deliverables:
+  - labs/advanced/README.md
+  - labs/advanced/project/
+  depends_on:
+  - fundamentals
+  duration_minutes: 90
+  id: advanced
+  objective: Apply advanced patterns and best practices
+  title: Advanced Topics

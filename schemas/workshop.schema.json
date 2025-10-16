@@ -1,0 +1,94 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://workshopforge.dev/schemas/workshop.schema.json",
+  "title": "Workshop Specification",
+  "description": "Core workshop metadata and configuration",
+  "type": "object",
+  "required": ["id", "title", "version", "audience", "duration", "policy"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9-]+$",
+      "description": "Unique workshop identifier (lowercase, alphanumeric, dashes)"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 5,
+      "maxLength": 120,
+      "description": "Workshop title"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$",
+      "description": "Semantic version (e.g., 1.0.0)"
+    },
+    "audience": {
+      "type": "string",
+      "description": "Target audience description"
+    },
+    "duration": {
+      "type": "object",
+      "required": ["groups", "sessions_per_group", "session_minutes"],
+      "properties": {
+        "groups": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Number of workshop groups/days"
+        },
+        "sessions_per_group": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Sessions per group"
+        },
+        "session_minutes": {
+          "type": "integer",
+          "minimum": 15,
+          "description": "Duration of each session in minutes"
+        }
+      }
+    },
+    "policy": {
+      "type": "object",
+      "required": ["student_ai_usage", "license"],
+      "properties": {
+        "student_ai_usage": {
+          "type": "string",
+          "enum": ["forbidden", "allowed", "encouraged"],
+          "description": "Policy on AI tool usage by students"
+        },
+        "license": {
+          "type": "string",
+          "description": "License for workshop materials (e.g., CC-BY-4.0, MIT)"
+        }
+      }
+    },
+    "outputs": {
+      "type": "object",
+      "properties": {
+        "slides": {
+          "type": "boolean",
+          "default": true,
+          "description": "Generate slide decks"
+        },
+        "handouts": {
+          "type": "boolean",
+          "default": true,
+          "description": "Generate handout materials"
+        }
+      }
+    },
+    "branding": {
+      "type": "object",
+      "properties": {
+        "org": {
+          "type": "string",
+          "description": "Organization name"
+        },
+        "theme": {
+          "type": "string",
+          "description": "Visual theme identifier"
+        }
+      }
+    }
+  }
+}

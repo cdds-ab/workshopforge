@@ -1,0 +1,17 @@
+id: python-basics
+title: Python Basics Workshop
+version: 1.0.0
+audience: Beginner programmers with no Python experience
+duration:
+  groups: 1
+  sessions_per_group: 2
+  session_minutes: 90
+policy:
+  student_ai_usage: allowed
+  license: CC-BY-4.0
+outputs:
+  slides: true
+  handouts: true
+branding:
+  org: Example Organization
+  theme: default
