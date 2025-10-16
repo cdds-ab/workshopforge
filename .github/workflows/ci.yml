@@ -1,0 +1,109 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ['3.10', '3.11', '3.12']
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v4
+        with:
+          enable-cache: true
+
+      - name: Set up Python ${{ matrix.python-version }}
+        run: uv python install ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: uv sync --all-extras --dev
+
+      - name: Lint with ruff
+        run: uv run ruff check forge/
+
+      - name: Check formatting with black
+        run: uv run black --check forge/
+
+      - name: Validate minimal example specs
+        run: uv run workshopforge validate --spec-dir examples/minimal/spec
+
+      - name: Generate minimal example
+        run: uv run workshopforge generate --spec-dir examples/minimal/spec --target examples/minimal/out/test-ci
+
+      - name: Run compliance check
+        run: uv run workshopforge ai check --spec-dir examples/minimal/spec --target-dir examples/minimal/out/test-ci
+
+      - name: Test init command
+        run: |
+          uv run workshopforge init examples/ci-test
+          uv run workshopforge validate --spec-dir examples/ci-test/spec
+          uv run workshopforge generate --spec-dir examples/ci-test/spec --target examples/ci-test/out/ci
+
+      - name: Upload compliance report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: compliance-report-py${{ matrix.python-version }}
+          path: examples/*/reports/
+
+  integration:
+    runs-on: ubuntu-latest
+    needs: test
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v4
+
+      - name: Set up Python
+        run: uv python install 3.11
+
+      - name: Install workshopforge
+        run: uv pip install -e .
+
+      - name: Full workflow test
+        run: |
+          uv run workshopforge init test-full-workflow
+          cd test-full-workflow
+
+          # Validate
+          uv run workshopforge validate
+
+          # Generate instructor materials
+          uv run workshopforge generate --target out/instructor
+
+          # Check compliance
+          uv run workshopforge ai check --target-dir out/instructor
+
+          # Create student pack
+          uv run workshopforge promote out/instructor out/student
+
+          # Verify student pack exists
+          test -f out/student/README.md
+          test -f out/student/COURSE.md
+          test ! -d out/student/instructor
+          test ! -d out/student/reference
+
+          echo "✓ Full workflow test passed!"
+
+      - name: AI orchestration test
+        run: |
+          cd examples/minimal
+
+          # Test plan
+          uv run workshopforge ai plan "Add advanced topics module" --spec-dir spec
+
+          # Test explain
+          uv run workshopforge ai explain "labs/intro-python/README.md" --spec-dir spec
+
+          echo "✓ AI orchestration test passed!"
