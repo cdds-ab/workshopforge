@@ -28,9 +28,11 @@ def get_provider(provider_name: str) -> AIProvider:
         return EchoProvider()
     elif provider_name == "openai":
         from .openai import OpenAIProvider
+
         return OpenAIProvider()
     elif provider_name == "anthropic":
         from .anthropic import AnthropicProvider
+
         return AnthropicProvider()
     else:
         raise ValueError(f"Unknown provider: {provider_name}")

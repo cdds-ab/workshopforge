@@ -105,7 +105,13 @@ class SpecLoader:
     def _list_loaded_files(self) -> list[str]:
         """Get list of actually loaded spec files."""
         files = []
-        for name in ["workshop.yml", "modules.yml", "profile.yml", "project.md", "ai_guidelines.md"]:
+        for name in [
+            "workshop.yml",
+            "modules.yml",
+            "profile.yml",
+            "project.md",
+            "ai_guidelines.md",
+        ]:
             path = self.spec_dir / name
             if path.exists():
                 files.append(name)

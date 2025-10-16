@@ -7,7 +7,7 @@ context stability.
 """
 
 from pathlib import Path
-from typing import Dict, Any
+from typing import Dict
 
 from .loader import SpecLoader
 from .utils import compute_hash
@@ -83,12 +83,14 @@ class PreludeGenerator:
 
         # Add modules with objectives and deliverables
         for i, module in enumerate(modules, 1):
-            sections.extend([
-                f"### {i}. {module.get('title', module['id'])} (`{module['id']}`)",
-                f"**Objective:** {module['objective']}",
-                f"**Duration:** {module['duration_minutes']} min",
-                "**Deliverables:**",
-            ])
+            sections.extend(
+                [
+                    f"### {i}. {module.get('title', module['id'])} (`{module['id']}`)",
+                    f"**Objective:** {module['objective']}",
+                    f"**Duration:** {module['duration_minutes']} min",
+                    "**Deliverables:**",
+                ]
+            )
             for deliverable in module.get("deliverables", []):
                 sections.append(f"  - `{deliverable}`")
             if module.get("depends_on"):
@@ -97,39 +99,45 @@ class PreludeGenerator:
 
         # Add project context if available
         if project:
-            sections.extend([
-                "## Project Context",
-                "",
-                project.strip(),
-                "",
-            ])
+            sections.extend(
+                [
+                    "## Project Context",
+                    "",
+                    project.strip(),
+                    "",
+                ]
+            )
 
         # Add AI generation guidelines if available
         if ai_guidelines:
-            sections.extend([
-                "## AI Generation Guidelines",
-                "",
-                ai_guidelines.strip(),
-                "",
-            ])
+            sections.extend(
+                [
+                    "## AI Generation Guidelines",
+                    "",
+                    ai_guidelines.strip(),
+                    "",
+                ]
+            )
 
         # Add standard constraints
-        sections.extend([
-            "## Constraints and Rules",
-            "",
-            "1. All generated content MUST align with module objectives",
-            "2. All declared deliverables MUST be created",
-            "3. Student AI policy MUST be respected in materials",
-            "4. File naming follows spec conventions (lowercase, dashes)",
-            "5. Instructor vs student separation MUST be maintained",
-            "6. Code and documentation are written in English",
-            "7. Generated materials reference their spec source (e.g., `modules.yml#module-id`)",
-            "",
-            "---",
-            "",
-            "Use this context to ensure all AI-generated content is spec-compliant,",
-            "consistent across sessions, and aligned with workshop objectives.",
-        ])
+        sections.extend(
+            [
+                "## Constraints and Rules",
+                "",
+                "1. All generated content MUST align with module objectives",
+                "2. All declared deliverables MUST be created",
+                "3. Student AI policy MUST be respected in materials",
+                "4. File naming follows spec conventions (lowercase, dashes)",
+                "5. Instructor vs student separation MUST be maintained",
+                "6. Code and documentation are written in English",
+                "7. Generated materials reference their spec source (e.g., `modules.yml#module-id`)",
+                "",
+                "---",
+                "",
+                "Use this context to ensure all AI-generated content is spec-compliant,",
+                "consistent across sessions, and aligned with workshop objectives.",
+            ]
+        )
 
         self._prelude_text = "\n".join(sections)
         self._prelude_hash = compute_hash(self._prelude_text)

@@ -6,7 +6,6 @@ validates against policies, and executes changes with full logging.
 """
 
 import json
-import shutil
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
@@ -15,7 +14,7 @@ from .policies import PolicyEngine, PolicyViolation
 from .prelude import PreludeGenerator
 from .providers import get_provider
 from .reporters import ComplianceReporter, format_plan_report
-from .utils import compute_hash, ensure_dir, timestamp, write_json
+from .utils import ensure_dir, timestamp, write_json
 
 
 class AIOrchestrator:
@@ -123,7 +122,9 @@ class AIOrchestrator:
         # Run policy checks (for now, on current state)
         # In full implementation, would check staged changes
         target_dir = self.loader.spec_dir.parent / "out" / "instructor"
-        violations = self.policy_engine.check(self.loader, target_dir if target_dir.exists() else None)
+        violations = self.policy_engine.check(
+            self.loader, target_dir if target_dir.exists() else None
+        )
 
         # Filter allowed violations
         if allow_violations:
@@ -147,7 +148,9 @@ class AIOrchestrator:
             self._apply_changes(changes)
             result["message"] = f"Applied {len(changes)} changes successfully"
         else:
-            result["message"] = f"Blocked by {len([v for v in violations if v.severity == 'error'])} policy errors"
+            result["message"] = (
+                f"Blocked by {len([v for v in violations if v.severity == 'error'])} policy errors"
+            )
 
         # Generate compliance report
         reporter = ComplianceReporter(self.reports_dir)
@@ -247,7 +250,9 @@ class AIOrchestrator:
             if action == "create":
                 ensure_dir(path.parent)
                 path.write_text(
-                    change.get("content", f"# Generated content\n\nGoal: {change.get('description')}"),
+                    change.get(
+                        "content", f"# Generated content\n\nGoal: {change.get('description')}"
+                    ),
                     encoding="utf-8",
                 )
 

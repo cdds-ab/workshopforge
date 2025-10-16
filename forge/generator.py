@@ -94,7 +94,9 @@ class WorkshopGenerator:
         if ci_config.get("enable_basic_checks", True):
             self._generate_ci(target_dir, context)
 
-    def _render_template(self, template_path: str, output_path: Path, context: Dict[str, Any]) -> None:
+    def _render_template(
+        self, template_path: str, output_path: Path, context: Dict[str, Any]
+    ) -> None:
         """
         Render single template to output file.
 
@@ -109,7 +111,9 @@ class WorkshopGenerator:
         ensure_dir(output_path.parent)
         output_path.write_text(rendered, encoding="utf-8")
 
-    def _generate_labs(self, target_dir: Path, modules: list[Dict[str, Any]], context: Dict[str, Any]) -> None:
+    def _generate_labs(
+        self, target_dir: Path, modules: list[Dict[str, Any]], context: Dict[str, Any]
+    ) -> None:
         """
         Generate lab directories and READMEs for all modules.
 

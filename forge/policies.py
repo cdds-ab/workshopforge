@@ -142,7 +142,6 @@ class DeliverableExistenceRule(PolicyRule):
             return violations
 
         for module in loader.get_modules():
-            module_id = module.get("id", "unknown")
             for deliverable in module.get("deliverables", []):
                 deliverable_path = target_dir / deliverable
 

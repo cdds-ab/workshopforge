@@ -5,11 +5,9 @@ Validates workshop specifications against JSON schemas to ensure
 correctness and completeness before generation.
 """
 
-import json
 from pathlib import Path
 from typing import Any, Dict, List
 
-import jsonschema
 from jsonschema import Draft7Validator
 
 from .utils import read_json, read_yaml

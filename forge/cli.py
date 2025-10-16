@@ -11,13 +11,12 @@ from typing import Optional
 import typer
 from rich import print as rprint
 from rich.console import Console
-from rich.table import Table
 
 from . import __version__
 from .generator import WorkshopGenerator, promote_to_student_pack
 from .loader import SpecLoader
 from .orchestrator import AIOrchestrator
-from .utils import ensure_dir, read_yaml, write_yaml
+from .utils import ensure_dir, write_yaml
 from .validator import SpecValidator
 
 app = typer.Typer(
@@ -68,7 +67,9 @@ def init(
 
     if path.exists() and not force:
         if any(path.iterdir()):
-            rprint(f"[red]Error:[/red] Directory {path} exists and is not empty. Use --force to overwrite.")
+            rprint(
+                f"[red]Error:[/red] Directory {path} exists and is not empty. Use --force to overwrite."
+            )
             raise typer.Exit(1)
 
     ensure_dir(path)
@@ -219,7 +220,7 @@ Workshop initialized with WorkshopForge.
     (path / "README.md").write_text(readme, encoding="utf-8")
     rprint("  [green]✓[/green] Created README.md")
 
-    rprint(f"\n[green]✓ Workshop initialized![/green]")
+    rprint("\n[green]✓ Workshop initialized![/green]")
     rprint(f"\nNext: cd {path.name} && workshopforge validate")
 
 
@@ -309,7 +310,7 @@ def generate(
 
     try:
         generator.generate(target)
-        rprint(f"\n[green]✓ Workshop generated successfully![/green]")
+        rprint("\n[green]✓ Workshop generated successfully![/green]")
         rprint(f"\nOutput: {target}")
     except Exception as e:
         rprint(f"[red]Error generating workshop:[/red] {e}")
@@ -340,7 +341,7 @@ def promote(
         rprint(f"[red]Error:[/red] Instructor directory not found: {instructor_dir}")
         raise typer.Exit(1)
 
-    rprint(f"[blue]Promoting to student pack...[/blue]")
+    rprint("[blue]Promoting to student pack...[/blue]")
     rprint(f"  Source: {instructor_dir}")
     rprint(f"  Target: {student_dir}")
 
@@ -355,7 +356,7 @@ def promote(
 
     try:
         promote_to_student_pack(instructor_dir, student_dir, redaction_list)
-        rprint(f"\n[green]✓ Student pack created![/green]")
+        rprint("\n[green]✓ Student pack created![/green]")
         rprint(f"\nOutput: {student_dir}")
     except Exception as e:
         rprint(f"[red]Error:[/red] {e}")
@@ -402,7 +403,7 @@ def ai_plan(
         rprint("[green]Plan generated![/green]\n")
         rprint(plan["response_text"])
         rprint(f"\n[dim]Spec hash: {plan['spec_hash']}[/dim]")
-        rprint(f"[dim]Logged to: ai_logs/[/dim]")
+        rprint("[dim]Logged to: ai_logs/[/dim]")
 
     except Exception as e:
         rprint(f"[red]Error:[/red] {e}")
@@ -462,7 +463,7 @@ def ai_apply(
             rprint(f"[red]✗ {result['message']}[/red]")
             rprint("\nSee reports/compliance.md for details")
 
-        rprint(f"\n[dim]Compliance report: reports/compliance.md[/dim]")
+        rprint("\n[dim]Compliance report: reports/compliance.md[/dim]")
 
     except Exception as e:
         rprint(f"[red]Error:[/red] {e}")
@@ -514,10 +515,10 @@ def ai_check(
             errors = [v for v in violations if v.severity == "error"]
             warnings = [v for v in violations if v.severity == "warn"]
 
-            rprint(f"[yellow]Violations found:[/yellow]")
+            rprint("[yellow]Violations found:[/yellow]")
             rprint(f"  Errors: {len(errors)}")
             rprint(f"  Warnings: {len(warnings)}")
-            rprint(f"\nSee reports/compliance.md for details")
+            rprint("\nSee reports/compliance.md for details")
 
     except Exception as e:
         rprint(f"[red]Error:[/red] {e}")
