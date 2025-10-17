@@ -213,31 +213,75 @@ Define constraints like:
 ### Echo Provider (Default)
 **For testing and development:**
 ```bash
-# No API key needed
-export WORKSHOPFORGE_PROVIDER=echo
-workshopforge ai plan --goal "test plan"
+# No API key needed, deterministic test output
+workshopforge ai plan --provider echo --goal "test plan"
 ```
 
-Outputs:
-- Simulated plan in `ai_logs/`
-- No actual AI inference
-- Useful for testing workflows
+**Characteristics:**
+- No external API calls
+- No API key required
+- Parses specs and generates stub plans
+- Useful for testing workflows, CI/CD
+- Does NOT generate actual content (only plans)
+
+**Use when:**
+- Testing WorkshopForge infrastructure
+- Validating specs without costs
+- CI/CD pipeline testing
+- Learning WorkshopForge commands
+
+### Anthropic Provider (Claude)
+**Recommended for production content generation:**
+```bash
+# 1. Get API key: https://console.anthropic.com/settings/keys
+export ANTHROPIC_API_KEY=sk-ant-...
+
+# 2. Use with WorkshopForge
+workshopforge ai plan --provider anthropic --goal "Generate slides for terraform-basics"
+workshopforge ai apply --provider anthropic --goal "Generate slides for terraform-basics"
+```
+
+**Characteristics:**
+- Model: Claude 3.5 Sonnet (claude-3-5-sonnet-20241022)
+- Context window: 200k tokens (can process large specs)
+- Excellent code generation quality
+- Strong reasoning for complex instructions
+- Prepaid credit system (~$3/1M input tokens, ~$15/1M output tokens)
+
+**Use when:**
+- Generating workshop content (slides, labs, notes)
+- Complex multi-file operations
+- Need high-quality code examples
+- Working with large specs (multiple modules)
+
+**Costs (estimated):**
+- Slide deck (1 module): ~$0.20-0.50
+- Lab with README + code: ~$0.30-0.80
+- Full workshop (5-10 modules): ~$2-5
 
 ### OpenAI Provider
-**For production use:**
+**Alternative production provider (stub - not yet implemented):**
 ```bash
-export WORKSHOPFORGE_PROVIDER=openai
+# Implementation pending
 export OPENAI_API_KEY=sk-...
-workshopforge ai plan --goal "real enhancement"
+workshopforge ai plan --provider openai --goal "..."
 ```
 
-### Anthropic Provider
-**Alternative production provider:**
-```bash
-export WORKSHOPFORGE_PROVIDER=anthropic
-export ANTHROPIC_API_KEY=sk-ant-...
-workshopforge ai plan --goal "real enhancement"
-```
+**When implemented, use for:**
+- Alternative to Anthropic
+- GPT-4 Turbo for cost optimization
+- Organization with existing OpenAI contracts
+
+### Provider Comparison
+
+| Feature | Echo | Anthropic | OpenAI (stub) |
+|---------|------|-----------|---------------|
+| **Cost** | Free | ~$3-15/1M tokens | TBD |
+| **Setup** | None | API key + credits | API key |
+| **Content Quality** | Test only | Excellent | TBD |
+| **Context Window** | N/A | 200k tokens | 128k (GPT-4) |
+| **Speed** | Instant | 30-60s/module | TBD |
+| **Use Case** | Testing | Production | Future |
 
 ## Common Mistakes to Avoid
 

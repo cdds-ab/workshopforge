@@ -332,14 +332,34 @@ uv run workshopforge ai plan "..." --provider openai
 
 Implementierung TODO (siehe `forge/providers/openai.py`).
 
-### Anthropic (Stub)
+### Anthropic (Claude)
 
 ```bash
+# 1. Get API Key from https://console.anthropic.com/settings/keys
 export ANTHROPIC_API_KEY=sk-ant-...
+
+# 2. Use with WorkshopForge
 uv run workshopforge ai plan "..." --provider anthropic
+uv run workshopforge ai apply "..." --provider anthropic
 ```
 
-Implementierung TODO (siehe `forge/providers/anthropic.py`).
+**Features:**
+- Uses Claude 3.5 Sonnet (latest model)
+- Excellent code generation quality
+- Long context window (200k tokens)
+- Prepaid credit system (see https://console.anthropic.com)
+
+**Costs (approximate):**
+- Input: ~$3 per 1M tokens
+- Output: ~$15 per 1M tokens
+- Workshop content generation: ~$0.50-2.00 per module
+
+**Setup:**
+1. Create account at https://console.anthropic.com
+2. Navigate to API Keys (https://console.anthropic.com/settings/keys)
+3. Click "Create API Key"
+4. Copy key and set environment variable
+5. Purchase initial credits (e.g. $5, $20, $50)
 
 ## Policy-Konfiguration
 

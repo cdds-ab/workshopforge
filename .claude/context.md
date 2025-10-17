@@ -1,7 +1,7 @@
 # WorkshopForge - Kontext-Speicherpunkt
 
-**Datum**: 2025-10-16
-**Status**: Installation erfolgreich, Package-Data-Fix committed
+**Datum**: 2025-10-17
+**Status**: Production-ready, AI Usage Guide + Pre-commit Hooks implementiert, Erstes Production Workshop erstellt
 **Repository**: https://github.com/cdds-ab/workshopforge (PUBLIC)
 
 ## Aktueller Stand
@@ -29,13 +29,32 @@
    - PROJECT_SUMMARY.md (Übersicht)
    - FEATURES.md (Feature-Liste mit Roadmap)
 
-### 🔧 Letzter Fix
+### 🔧 Letzte Updates (2025-10-17)
 
-**Problem**: Schemas und Templates wurden nicht mit installiert
-**Lösung**:
-- `MANIFEST.in` erstellt (schemas/*.json, templates/*.j2)
-- `pyproject.toml` um package-data ergänzt
-- Committed in: `655c8cc`
+**1. Package Data Fix** (Commit: `ad291be`, `fb574dc`)
+- Problem: Schemas, Templates, AI_USAGE_GUIDE.md nicht im installierten Package
+- Lösung:
+  - Schemas/Templates nach `forge/` verschoben
+  - AI_USAGE_GUIDE.md nach `forge/` verschoben
+  - MANIFEST.in aktualisiert
+  - Pfade in cli.py angepasst (parent.parent → parent)
+- Status: ✅ Installation von GitHub funktioniert vollständig
+
+**2. AI Usage Guide + Pre-commit Hooks** (Commits: `1371758`, `508d19f`, `4205fd2`)
+- Comprehensive AI_USAGE_GUIDE.md (basierend auf budjira pattern)
+- `workshopforge ai usage-prompt` command (--plain flag für file output)
+- Pre-commit infrastructure:
+  - `.pre-commit-config.yaml` (ruff, hooks, standard checks)
+  - `scripts/check_ai_usage_guide.py` (validates guide freshness)
+  - Warnt wenn guide veraltet (blockt nicht)
+- Integration in README.md dokumentiert
+- Status: ✅ Pre-commit hooks funktionieren
+
+**3. Production Workshop Created** (2025-10-17)
+- `~/git/cdds/lab-terraform-basics` erfolgreich initialisiert
+- Content von `terraform-schulung` migriert
+- Erste echte Nutzung von WorkshopForge für Production-Workshop
+- Status: ✅ Tool funktioniert end-to-end
 
 ### 📦 Installation
 
@@ -47,25 +66,78 @@ curl -sSL https://raw.githubusercontent.com/cdds-ab/workshopforge/main/install.s
 uv tool install git+https://github.com/cdds-ab/workshopforge.git
 ```
 
-### 🧪 Letzter Test-Status
+### 🧪 Test-Status (2025-10-17)
 
 - ✅ CI Pipeline erfolgreich (3.10, 3.11, 3.12)
-- ✅ Linting mit ruff
-- ✅ Formatting mit black
-- ✅ Installation via install.sh
-- ⏳ Validate-Command nach Reinstall (noch zu testen)
+- ✅ Linting mit ruff + pre-commit hooks
+- ✅ Formatting mit black/ruff-format
+- ✅ Installation via GitHub (`uv tool install git+...`)
+- ✅ Vollständiger Workflow getestet:
+  - init → validate → generate → ai check → promote ✓
+  - All commands functional with fresh install ✓
+  - Schemas/Templates/AI_USAGE_GUIDE included in package ✓
+- ✅ Production usage: lab-terraform-basics Workshop erstellt
+
+## Neue Features (seit letztem Update)
+
+### AI Usage Prompt Command
+```bash
+# Display in terminal (formatted)
+workshopforge ai usage-prompt
+
+# Plain markdown output (for .claude/ai-usage-prompt.md)
+workshopforge ai usage-prompt --plain > .claude/ai-usage-prompt.md
+```
+- Lädt `forge/AI_USAGE_GUIDE.md` und zeigt es an
+- Rich-formatiert oder plain markdown
+- Perfekt für AI assistants und documentation
+
+### Pre-commit Hooks System
+```bash
+# Install hooks
+uv run pre-commit install
+# OR
+make hooks
+
+# Run manually
+uv run pre-commit run --all-files
+```
+Hooks:
+- **ruff** - Linting + fixing
+- **ruff-format** - Code formatting
+- **check-ai-usage-guide** - Validates guide freshness when CLI/providers change
+- **Standard hooks** - trailing whitespace, yaml/toml checks, etc.
+
+## CLI Commands (aktuell 9)
+
+### Core Commands
+1. **init** - Initialize new workshop
+2. **validate** - JSON-Schema validation of specs
+3. **generate** - Materialize workshop from templates + specs
+4. **promote** - Create student pack (remove instructor content)
+
+### AI Commands
+5. **ai plan** - Generate plan without writes (with spec-prelude)
+6. **ai apply** - Execute plan (with policy gates)
+7. **ai check** - Compliance check without writes
+8. **ai explain** - Show spec references for file
+9. **ai usage-prompt** - Display AI usage guide (NEW)
 
 ## Offene TODOs
 
 ### Kritisch
-- [ ] **Verify Package Installation**: Testen ob schemas/templates nach Install verfügbar sind
-- [ ] **Full Workflow Test**: init → validate → generate → check durchlaufen
+- [x] **Verify Package Installation** - ✅ Getestet, funktioniert
+- [x] **Full Workflow Test** - ✅ Getestet, funktioniert
+- [x] **AI Usage Guide** - ✅ Implementiert
+- [x] **Pre-commit Hooks** - ✅ Implementiert
 
-### Nice-to-Have
-- [ ] OpenAI Provider implementieren
-- [ ] Anthropic Provider implementieren
-- [ ] Unit Tests (pytest)
-- [ ] PyPI Publish
+### Nice-to-Have (Future)
+- [ ] **OpenAI Provider implementieren** - Stubs vorhanden in `forge/providers/openai.py`
+- [ ] **Anthropic Provider implementieren** - Stubs vorhanden in `forge/providers/anthropic.py`
+- [ ] **Unit Tests (pytest)** - Test-Infrastruktur vorhanden, Tests fehlen
+- [ ] **PyPI Publish** - Package ready, nur Publishing fehlt
+- [ ] **Dynamic AI Usage Guide** - Template-basiert statt statisch (current: static file)
+- [ ] **Marp Integration** - Slides direkt aus specs generieren
 
 ## Projekt-Struktur
 
