@@ -594,8 +594,8 @@ def ai_usage_prompt(
         # Copy to clipboard (requires xclip/pbcopy)
         workshopforge ai usage-prompt --plain | xclip -selection clipboard
     """
-    # Read the AI_USAGE_GUIDE.md from project root
-    guide_path = Path(__file__).parent.parent / "AI_USAGE_GUIDE.md"
+    # Read the AI_USAGE_GUIDE.md from forge package
+    guide_path = Path(__file__).parent / "AI_USAGE_GUIDE.md"
 
     if not guide_path.exists():
         rprint("[red]Error:[/red] AI_USAGE_GUIDE.md not found")

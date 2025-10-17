@@ -28,7 +28,7 @@ repos:
         entry: python scripts/check_ai_usage_guide.py
         language: system
         pass_filenames: false
-        files: ^(forge/cli\.py|forge/orchestrator\.py|forge/policies\.py|forge/providers/.*\.py|AI_USAGE_GUIDE\.md)$
+        files: ^(forge/cli\.py|forge/orchestrator\.py|forge/policies\.py|forge/providers/.*\.py|forge/AI_USAGE_GUIDE\.md)$
 
   # Standard pre-commit hooks
   - repo: https://github.com/pre-commit/pre-commit-hooks
@@ -36,7 +36,7 @@ repos:
     hooks:
       - id: trailing-whitespace
       - id: end-of-file-fixer
-        exclude: ^AI_USAGE_GUIDE\.md$
+        exclude: ^forge/AI_USAGE_GUIDE\.md$
       - id: check-yaml
       - id: check-toml
       - id: check-added-large-files

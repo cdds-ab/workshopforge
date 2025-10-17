@@ -64,7 +64,7 @@ def validate_guide_freshness() -> bool:
         True if guide is fresh or successfully updated, False on error
     """
     try:
-        guide_path = Path("AI_USAGE_GUIDE.md")
+        guide_path = Path("forge/AI_USAGE_GUIDE.md")
 
         if not guide_path.exists():
             print("⚠️  AI_USAGE_GUIDE.md not found, skipping validation")
@@ -109,7 +109,7 @@ def validate_guide_freshness() -> bool:
         print("  • Policy rules were updated")
         print()
         print("To update the guide, run:")
-        print("  workshopforge ai usage-prompt --plain > AI_USAGE_GUIDE.md")
+        print("  workshopforge ai usage-prompt --plain > forge/AI_USAGE_GUIDE.md")
         print()
         print("Or manually edit AI_USAGE_GUIDE.md to reflect the changes.")
         print("=" * 70)

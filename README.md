@@ -396,7 +396,7 @@ Verhindert defekte Specs im Repository.
 
 ## Dokumentation
 
-- **[AI Usage Guide](AI_USAGE_GUIDE.md)** - Umfassende Anleitung für LLMs und Entwickler zur effektiven Nutzung von WorkshopForge
+- **[AI Usage Guide](forge/AI_USAGE_GUIDE.md)** - Umfassende Anleitung für LLMs und Entwickler zur effektiven Nutzung von WorkshopForge
 - **[Quick Start](QUICKSTART.md)** - 5-Minuten Schnelleinstieg
 - **[Testing Guide](TESTING.md)** - Manuelle Test-Szenarien
 - **[Project Summary](PROJECT_SUMMARY.md)** - Architektur-Übersicht
@@ -417,7 +417,7 @@ workshopforge ai usage-prompt --plain
 workshopforge ai usage-prompt --plain > .claude/ai-usage-prompt.md
 ```
 
-Die Guide wird automatisch aus `AI_USAGE_GUIDE.md` geladen. Bei Code-Änderungen (CLI, Provider, Policies) prüft ein Pre-commit Hook, ob die Dokumentation aktualisiert werden muss.
+Die Guide wird automatisch aus `forge/AI_USAGE_GUIDE.md` geladen. Bei Code-Änderungen (CLI, Provider, Policies) prüft ein Pre-commit Hook, ob die Dokumentation aktualisiert werden muss.
 
 ## FAQ
 
