@@ -393,6 +393,14 @@ Generierte Workflows in `.github/workflows/basic_checks.yml`:
 
 Verhindert defekte Specs im Repository.
 
+## Dokumentation
+
+- **[AI Usage Guide](AI_USAGE_GUIDE.md)** - Umfassende Anleitung für LLMs und Entwickler zur effektiven Nutzung von WorkshopForge
+- **[Quick Start](QUICKSTART.md)** - 5-Minuten Schnelleinstieg
+- **[Testing Guide](TESTING.md)** - Manuelle Test-Szenarien
+- **[Project Summary](PROJECT_SUMMARY.md)** - Architektur-Übersicht
+- **[Features](FEATURES.md)** - Feature-Liste und Roadmap
+
 ## FAQ
 
 **Q: Kann ich generierte Dateien manuell editieren?**
