@@ -1,4 +1,4 @@
 include README.md
 include LICENSE
-recursive-include schemas *.json
-recursive-include templates *.j2 *.yml
+recursive-include forge/schemas *.json
+recursive-include forge/templates *.j2 *.yml

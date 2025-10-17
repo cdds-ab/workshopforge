@@ -246,7 +246,7 @@ def validate(
     rprint(f"[blue]Validating specs in:[/blue] {spec_dir}")
 
     # Get schema directory (in package)
-    schema_dir = Path(__file__).parent.parent / "schemas"
+    schema_dir = Path(__file__).parent / "schemas"
     validator = SpecValidator(schema_dir)
 
     results = validator.validate_directory(spec_dir)
@@ -305,7 +305,7 @@ def generate(
         raise typer.Exit(1)
 
     # Generate
-    template_dir = Path(__file__).parent.parent / "templates"
+    template_dir = Path(__file__).parent / "templates"
     generator = WorkshopGenerator(loader, template_dir)
 
     try:
