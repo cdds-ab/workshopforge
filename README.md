@@ -50,6 +50,7 @@ pip install git+https://github.com/cdds-ab/workshopforge.git
 git clone https://github.com/cdds-ab/workshopforge.git
 cd workshopforge
 make install
+make hooks  # Installiert pre-commit hooks
 ```
 
 ### Voraussetzungen
@@ -400,6 +401,23 @@ Verhindert defekte Specs im Repository.
 - **[Testing Guide](TESTING.md)** - Manuelle Test-Szenarien
 - **[Project Summary](PROJECT_SUMMARY.md)** - Architektur-Übersicht
 - **[Features](FEATURES.md)** - Feature-Liste und Roadmap
+
+### AI Usage Guide Command
+
+Für AI-Assistenten steht ein spezielles Command zur Verfügung:
+
+```bash
+# Im Terminal anzeigen (formatiert)
+workshopforge ai usage-prompt
+
+# Als Plain Markdown ausgeben (für .claude/ai-usage-prompt.md)
+workshopforge ai usage-prompt --plain
+
+# Direkt in Datei speichern
+workshopforge ai usage-prompt --plain > .claude/ai-usage-prompt.md
+```
+
+Die Guide wird automatisch aus `AI_USAGE_GUIDE.md` geladen. Bei Code-Änderungen (CLI, Provider, Policies) prüft ein Pre-commit Hook, ob die Dokumentation aktualisiert werden muss.
 
 ## FAQ
 
