@@ -53,6 +53,9 @@ workshopforge = "forge.cli:app"
 where = ["."]
 include = ["forge*"]
 
+[tool.setuptools.package-data]
+"*" = ["*.json", "*.j2", "*.yml", "*.yaml", "*.md"]
+
 [tool.black]
 line-length = 100
 target-version = ["py311"]

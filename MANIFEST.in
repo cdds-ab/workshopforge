@@ -1,0 +1,4 @@
+include README.md
+include LICENSE
+recursive-include schemas *.json
+recursive-include templates *.j2 *.yml

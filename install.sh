@@ -13,20 +13,30 @@ if ! command -v uv &> /dev/null; then
     export PATH="$HOME/.cargo/bin:$PATH"
 fi
 
-# Check Python version
-PYTHON_VERSION=$(uv python list | grep -E "3\.(10|11|12)" | head -1 | awk '{print $2}' || echo "")
+# Check if Python 3.10+ is available
+PYTHON_CMD=""
+for py_version in python3.12 python3.11 python3.10 python3; do
+    if command -v $py_version &> /dev/null; then
+        PY_VERSION=$($py_version --version 2>&1 | grep -oE '[0-9]+\.[0-9]+' | head -1)
+        MAJOR=$(echo $PY_VERSION | cut -d. -f1)
+        MINOR=$(echo $PY_VERSION | cut -d. -f2)
+        if [ "$MAJOR" -eq 3 ] && [ "$MINOR" -ge 10 ]; then
+            PYTHON_CMD=$py_version
+            echo "✓ Found Python $PY_VERSION"
+            break
+        fi
+    fi
+done
 
-if [ -z "$PYTHON_VERSION" ]; then
+if [ -z "$PYTHON_CMD" ]; then
     echo "📦 Installing Python 3.11..."
     uv python install 3.11
-    PYTHON_VERSION="3.11"
+    PYTHON_CMD="python3.11"
 fi
-
-echo "✓ Using Python $PYTHON_VERSION"
 
 # Install workshopforge as a tool
 echo "📦 Installing workshopforge..."
-uv tool install --python $PYTHON_VERSION git+https://github.com/cdds-ab/workshopforge.git
+uv tool install git+https://github.com/cdds-ab/workshopforge.git
 
 echo ""
 echo "✅ WorkshopForge installed successfully!"
