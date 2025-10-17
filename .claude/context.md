@@ -13,8 +13,8 @@
    - Deterministische Generierung (Jinja2 Templates)
    - Policy Engine (6 Default-Regeln)
    - AI Orchestrierung (plan/apply/check/explain)
-   - Provider-System (Echo funktional, OpenAI/Anthropic Stubs)
-   - CLI mit 8 Commands (Typer-based)
+   - Provider-System (Echo ✅, Anthropic ✅, OpenAI Stub)
+   - CLI mit 9 Commands (Typer-based)
 
 2. **Toolchain**
    - uv-basierte Entwicklungsumgebung
@@ -55,6 +55,20 @@
 - Content von `terraform-schulung` migriert
 - Erste echte Nutzung von WorkshopForge für Production-Workshop
 - Status: ✅ Tool funktioniert end-to-end
+
+**4. Anthropic Provider Implementation** (Commit: `3261457`)
+- Vollständige Claude API Integration für Production Content-Generierung
+- Implementierung:
+  - `forge/providers/anthropic.py` mit complete() Methode
+  - Claude 3.5 Sonnet (claude-3-5-sonnet-20241022) als Default-Modell
+  - System/User Message Formatting (Anthropic-spezifisch)
+  - Error Handling + hilfreiche Error-Messages
+  - Default: temperature=0.7, max_tokens=4096
+- Dependencies: `anthropic>=0.39.0` zu pyproject.toml hinzugefügt
+- Dokumentation:
+  - README.md: Setup-Anleitung, Kosten-Schätzungen
+  - AI_USAGE_GUIDE.md: Provider-Vergleichstabelle, Use-Case-Empfehlungen
+- Status: ✅ Implementiert, getestet (Import), bereit für API-Key
 
 ### 📦 Installation
 
@@ -130,14 +144,15 @@ Hooks:
 - [x] **Full Workflow Test** - ✅ Getestet, funktioniert
 - [x] **AI Usage Guide** - ✅ Implementiert
 - [x] **Pre-commit Hooks** - ✅ Implementiert
+- [x] **Anthropic Provider implementieren** - ✅ Implementiert (Commit 3261457)
 
 ### Nice-to-Have (Future)
 - [ ] **OpenAI Provider implementieren** - Stubs vorhanden in `forge/providers/openai.py`
-- [ ] **Anthropic Provider implementieren** - Stubs vorhanden in `forge/providers/anthropic.py`
 - [ ] **Unit Tests (pytest)** - Test-Infrastruktur vorhanden, Tests fehlen
 - [ ] **PyPI Publish** - Package ready, nur Publishing fehlt
 - [ ] **Dynamic AI Usage Guide** - Template-basiert statt statisch (current: static file)
 - [ ] **Marp Integration** - Slides direkt aus specs generieren
+- [ ] **End-to-End Test mit Anthropic API** - Benötigt API Key + Credits
 
 ## Projekt-Struktur
 
