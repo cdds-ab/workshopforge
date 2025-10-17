@@ -5,17 +5,25 @@ Du hast **5 Minuten**? Hier ist der schnellste Weg, um mit WorkshopForge zu star
 ## 1. Installation (30 Sekunden)
 
 ```bash
-git clone https://github.com/yourusername/workshopforge.git
-cd workshopforge
-make install
+# Einfach per curl installieren
+curl -sSL https://raw.githubusercontent.com/cdds-ab/workshopforge/main/install.sh | bash
 ```
 
-Benötigt: Python 3.10+, [uv](https://github.com/astral-sh/uv)
+Das wars! `workshopforge` ist jetzt verfügbar.
+
+**Alternative:**
+```bash
+# Mit uv
+uv tool install git+https://github.com/cdds-ab/workshopforge.git
+
+# Mit pip
+pip install git+https://github.com/cdds-ab/workshopforge.git
+```
 
 ## 2. Erstelle deinen ersten Workshop (1 Minute)
 
 ```bash
-uv run workshopforge init mein-workshop
+workshopforge init mein-workshop
 cd mein-workshop
 ```
 
@@ -51,8 +59,8 @@ modules:
 ## 4. Generiere den Workshop (30 Sekunden)
 
 ```bash
-uv run workshopforge validate
-uv run workshopforge generate --target out/instructor
+workshopforge validate
+workshopforge generate --target out/instructor
 ```
 
 Output:
@@ -72,7 +80,7 @@ out/instructor/
 ## 5. Prüfe Compliance (30 Sekunden)
 
 ```bash
-uv run workshopforge ai check --target-dir out/instructor
+workshopforge ai check --target-dir out/instructor
 cat reports/compliance.md
 ```
 
@@ -84,7 +92,7 @@ Zeigt:
 ## 6. Erstelle Student-Pack (20 Sekunden)
 
 ```bash
-uv run workshopforge promote out/instructor out/student
+workshopforge promote out/instructor out/student
 ```
 
 Entfernt automatisch:
@@ -101,10 +109,10 @@ Student-Pack ist ready für Distribution! 🚀
 
 ```bash
 # Plan erstellen (kein Write)
-uv run workshopforge ai plan "Füge ein Modul über docker-compose hinzu"
+workshopforge ai plan "Füge ein Modul über docker-compose hinzu"
 
 # Plan ausführen (mit Policy-Check)
-uv run workshopforge ai apply "Füge ein Modul über docker-compose hinzu"
+workshopforge ai apply "Füge ein Modul über docker-compose hinzu"
 ```
 
 **Wichtig**: Standard-Provider ist `echo` (Test-Modus). Für echte AI-Generierung musst du OpenAI/Anthropic Provider konfigurieren (siehe README).
@@ -113,7 +121,7 @@ uv run workshopforge ai apply "Füge ein Modul über docker-compose hinzu"
 
 ```bash
 # Zeige Spec-Referenzen für File
-uv run workshopforge ai explain "labs/docker-intro/README.md"
+workshopforge ai explain "labs/docker-intro/README.md"
 ```
 
 Output:
@@ -128,7 +136,7 @@ Schau dir `examples/minimal/` an:
 ```bash
 cd examples/minimal
 cat spec/modules.yml
-uv run workshopforge generate --spec-dir spec --target out/test
+workshopforge generate --spec-dir spec --target out/test
 ```
 
 ---

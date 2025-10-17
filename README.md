@@ -28,25 +28,33 @@ LLMs "vergessen" Kontext zwischen Sessions. Workshop-Materialien driften auseina
 
 ## Installation
 
+### Schnell-Installation (empfohlen)
+
 ```bash
-# Aus Repository
-git clone https://github.com/yourusername/workshopforge.git
-cd workshopforge
+# Installiert workshopforge mit einem Befehl
+curl -sSL https://raw.githubusercontent.com/cdds-ab/workshopforge/main/install.sh | bash
+```
 
+Danach verfügbar als: `workshopforge`
+
+### Alternative Installationsmethoden
+
+```bash
 # Mit uv (empfohlen)
+uv tool install git+https://github.com/cdds-ab/workshopforge.git
+
+# Mit pip direkt von GitHub
+pip install git+https://github.com/cdds-ab/workshopforge.git
+
+# Für Entwicklung: Repository klonen
+git clone https://github.com/cdds-ab/workshopforge.git
+cd workshopforge
 make install
-
-# Oder manuell
-uv venv --python 3.10
-uv pip install -e .
-
-# Oder mit pip (wenn published)
-pip install workshopforge
 ```
 
 ### Voraussetzungen
 - Python 3.10+
-- [uv](https://github.com/astral-sh/uv) (empfohlen): `curl -LsSf https://astral.sh/uv/install.sh | sh`
+- [uv](https://github.com/astral-sh/uv) wird automatisch installiert (wenn nicht vorhanden)
 - Keine externen API-Keys für Echo-Provider (Test-Modus)
 
 ## Schnellstart
