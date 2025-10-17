@@ -1,10 +1,11 @@
-.PHONY: help venv install install-dev test lint format clean run-example
+.PHONY: help venv install install-dev test lint format clean run-example hooks
 
 help:
 	@echo "Available targets:"
 	@echo "  venv         - Create virtual environment with uv"
 	@echo "  install      - Install package with uv"
 	@echo "  install-dev  - Install with dev dependencies"
+	@echo "  hooks        - Install pre-commit hooks"
 	@echo "  test         - Run tests"
 	@echo "  lint         - Run linters"
 	@echo "  format       - Format code"
@@ -19,6 +20,9 @@ install: venv
 
 install-dev: venv
 	uv pip install -e ".[dev]"
+
+hooks:
+	uv run pre-commit install
 
 test:
 	uv run pytest -v --cov=forge --cov-report=html --cov-report=term

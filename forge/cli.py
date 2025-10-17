@@ -11,6 +11,7 @@ from typing import Optional
 import typer
 from rich import print as rprint
 from rich.console import Console
+from rich.markdown import Markdown
 
 from . import __version__
 from .generator import WorkshopGenerator, promote_to_student_pack
@@ -556,6 +557,59 @@ def ai_explain(
     except Exception as e:
         rprint(f"[red]Error:[/red] {e}")
         raise typer.Exit(1)
+
+
+@ai_app.command("usage-prompt")
+def ai_usage_prompt(
+    plain: bool = typer.Option(
+        False, "--plain", "-p", help="Output plain markdown without terminal formatting"
+    ),
+):
+    """
+    Generate comprehensive usage guide for AI assistants.
+
+    Outputs a detailed, markdown-formatted guide explaining all workshopforge
+    functionality. This prompt can be provided to AI assistants to help
+    them understand and use workshopforge effectively.
+
+    The guide includes:
+    - Core principles (Spec-First, Session-Stability, Policy-Driven)
+    - Workflow patterns (New Workshop, Iterative Enhancement, Troubleshooting)
+    - Best practices for AI operations and goal planning
+    - Common mistakes and how to avoid them
+    - Provider selection guide
+    - Advanced usage (custom templates, policies, CI/CD)
+    - Debugging tips
+
+    Examples:
+        # Display the guide in terminal (formatted)
+        workshopforge ai usage-prompt
+
+        # Output plain markdown for files/clipboard
+        workshopforge ai usage-prompt --plain
+
+        # Save to file
+        workshopforge ai usage-prompt --plain > .claude/ai-usage-prompt.md
+
+        # Copy to clipboard (requires xclip/pbcopy)
+        workshopforge ai usage-prompt --plain | xclip -selection clipboard
+    """
+    # Read the AI_USAGE_GUIDE.md from project root
+    guide_path = Path(__file__).parent.parent / "AI_USAGE_GUIDE.md"
+
+    if not guide_path.exists():
+        rprint("[red]Error:[/red] AI_USAGE_GUIDE.md not found")
+        raise typer.Exit(1)
+
+    prompt = guide_path.read_text()
+
+    if plain:
+        # Output raw markdown for file/clipboard
+        print(prompt)
+    else:
+        # Render as Markdown for beautiful terminal output
+        md = Markdown(prompt)
+        console.print(md)
 
 
 if __name__ == "__main__":

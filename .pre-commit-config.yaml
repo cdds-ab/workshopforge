@@ -1,0 +1,47 @@
+# Pre-commit hooks configuration
+# See https://pre-commit.com for more information
+# Install: uv run pre-commit install
+# Run manually: uv run pre-commit run --all-files
+
+default_language_version:
+  python: python3.10
+
+repos:
+  # Ruff - Fast Python linter and formatter (replaces black, flake8, isort)
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.8.4
+    hooks:
+      # Run the linter
+      - id: ruff
+        args: [--fix]
+        types_or: [python, pyi]
+      # Run the formatter
+      - id: ruff-format
+        types_or: [python, pyi]
+
+  # Local hooks
+  - repo: local
+    hooks:
+      # AI usage guide freshness check
+      - id: check-ai-usage-guide
+        name: check AI usage guide freshness
+        entry: python scripts/check_ai_usage_guide.py
+        language: system
+        pass_filenames: false
+        files: ^(forge/cli\.py|forge/orchestrator\.py|forge/policies\.py|forge/providers/.*\.py|AI_USAGE_GUIDE\.md)$
+
+  # Standard pre-commit hooks
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+        exclude: ^AI_USAGE_GUIDE\.md$
+      - id: check-yaml
+      - id: check-toml
+      - id: check-added-large-files
+        args: [--maxkb=1000]
+      - id: check-merge-conflict
+      - id: check-case-conflict
+      - id: mixed-line-ending
+      - id: detect-private-key
