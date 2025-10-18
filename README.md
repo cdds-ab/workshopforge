@@ -25,6 +25,7 @@ LLMs "vergessen" Kontext zwischen Sessions. Workshop-Materialien driften auseina
 - ✅ **Session-Stabilität**: Spec-Hash verhindert Drift durch Kontext-Verlust
 - ✅ **Provider-Abstraktion**: Echo (Test), OpenAI, Anthropic (stubs)
 - ✅ **Compliance Reports**: JSON + Markdown Reports nach jedem Apply
+- ✅ **Evidenzbasierte Content-Validierung**: Wissenschaftlich fundierte Qualitätsprüfung von Slides basierend auf Kognitionsforschung
 
 ## Installation
 
@@ -286,6 +287,113 @@ uv run workshopforge ai apply "Optimiere Lab-Instruktionen"
 uv run workshopforge ai plan "Optimiere Lab-Instruktionen"
 uv run workshopforge ai apply "Optimiere Lab-Instruktionen"
 ```
+
+## Content-Validierung (Wissenschaftlich Fundiert)
+
+WorkshopForge validiert generierte Inhalte gegen **evidenzbasierte kognitionswissenschaftliche Prinzipien**, um optimale Lerneffektivität zu gewährleisten.
+
+### Wissenschaftliche Grundlagen
+
+Die Validierungsregeln basieren auf aktueller Forschung:
+
+- **Working Memory Capacity**: 3-5 Items für Erwachsene (Cowan, 2010)
+- **Attention Span**: ~8 Sekunden fokussierte Aufmerksamkeit (2024)
+- **Cognitive Load Theory**: Minimierung externer kognitiver Belastung (Sweller et al., 2019)
+- **Chunking-Prinzip**: Gruppierung reduziert Arbeitsgedächtnisbelastung
+- **Mayer's Multimedia Principles**: Wörter + Bilder besser als Wörter allein
+
+### Slide-Validierung
+
+```bash
+# Validiere generierte Slides
+uv run workshopforge validate-content out/instructor/slides
+
+# Beispiel-Output:
+❌ Found 93 content violations:
+
+out/instructor/slides/day2-modules.md:
+  Line 119: [code-block-length] Code block has 20 lines (max 12).
+            Split into multiple slides with (1/2), (2/2) notation.
+  Line 595: [bullet-count] Slide has 6 bullet points (max 5).
+            Split content across multiple slides.
+  Line 514: [total-content] Slide has 20 content lines (max 15).
+            Split into multiple slides - Cognitive Load Theory suggests less is better.
+```
+
+### Validierungsregeln
+
+#### Code-Blöcke (max 12 Zeilen)
+**Wissenschaftliche Grundlage**: Chunking-Prinzip für Programmier-Novizen
+- Forschung zeigt: Beispiele, die Instruktoren klein erscheinen, überfordern Novizen leicht
+- Live-Coding-Studien: Instruktoren können nur 2x so schnell gehen wie Lernende (nicht 10x wie mit Slides)
+- **Regel**: Code-Beispiele in verdauliche Stücke aufteilen
+- **Lösung**: Split mit (1/2), (2/2) Notation
+
+#### Bullet Points (max 5)
+**Wissenschaftliche Grundlage**: Working Memory Limit
+- Miller's 7±2 Regel, verfeinert zu 3-5 Items (Cowan, 2010)
+- Studien zeigen: Bei Slides mit vielen Bullet-Points lesen Lernende nur einen Bruchteil
+- **Regel**: Maximal 5 Aufzählungspunkte pro Folie
+- **Lösung**: Inhalt auf mehrere Folien verteilen
+
+#### Gesamt-Content (max 15 Zeilen)
+**Wissenschaftliche Grundlage**: Coherence Principle
+- "Je weniger auf einer Folie, desto besser" - insbesondere für Lernoptimierung
+- Dual-Channel-Überladung vermeiden: Text nicht vorlesen, der auf Folie steht
+- **Regel**: Maximal 15 Content-Zeilen (inkl. Code, Bullets, Text)
+- **Lösung**: Komplexe Inhalte über mehrere Folien zeigen
+
+### Best Practices aus der Forschung
+
+✅ **Empfohlen**:
+- Live-Coding-Demonstrationen statt statischer Code-Slides
+- Ein Konzept pro Folie (single-concept pieces)
+- Parsons Problems für Code-Übungen (reduziert Syntax-Recall-Burden)
+- Wörter mit relevanten Bildern paaren (Mayer's Multimedia Principle)
+- Labels in Diagramme integrieren (vermeidet Split Attention)
+
+❌ **Vermeiden**:
+- Folien-Text vorlesen (Dual-Channel-Überladung)
+- Dekorative Bilder ohne Lernunterstützung
+- Komplexe Diagramme + dichten Text auf gleicher Folie kombinieren
+
+### Konfiguration in ai_guidelines.md
+
+Die Validierungsregeln werden in `spec/ai_guidelines.md` definiert:
+
+```markdown
+### Slide Size Constraints (Evidence-Based)
+
+**Mandatory Limits:**
+- **Max code block**: 10-12 lines per slide (chunking principle)
+- **Max bullet points**: 5 per slide (working memory limit)
+- **Max total text lines**: 15 lines including bullets, code, and text
+- **Split long examples**: Use numbered slides (1/2, 2/2, 3/3)
+```
+
+### Integration in Workflow
+
+```bash
+# 1. Workshop generieren
+uv run workshopforge generate --target out/instructor
+
+# 2. Content validieren
+uv run workshopforge validate-content out/instructor
+
+# 3. Bei Violations: ai_guidelines.md anpassen und regenerieren
+vim spec/ai_guidelines.md
+uv run workshopforge ai apply "Split oversized slides according to CLT principles"
+
+# 4. Erneut validieren
+uv run workshopforge validate-content out/instructor
+```
+
+### Wissenschaftliche Referenzen
+
+- Cowan, N. (2010). The Magical Mystery Four: How is Working Memory Capacity Limited, and Why? *Current Directions in Psychological Science*
+- Sweller, J., van Merriënboer, J. J. G., & Paas, F. (2019). Cognitive Architecture and Instructional Design: 20 Years Later. *Educational Psychology Review*
+- Mayer, R. E. (2021). Multimedia Learning (3rd ed.). Cambridge University Press
+- PLOS Computational Biology (2018). Ten quick tips for teaching programming
 
 ## Architektur
 
