@@ -8,6 +8,7 @@ that validate structure, completeness, and adherence to specifications.
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
+from .content_validator import validate_slides
 from .loader import SpecLoader
 
 
@@ -311,6 +312,51 @@ class NamingConventionRule(PolicyRule):
         return violations
 
 
+class SlideContentRule(PolicyRule):
+    """
+    Verify slide content follows evidence-based cognitive science principles.
+
+    Based on:
+    - Working Memory Capacity: 3-5 items (Cowan, 2010)
+    - Cognitive Load Theory (Sweller et al., 2019)
+    - Chunking principle for code examples
+    - Mayer's Multimedia Learning principles
+    """
+
+    def __init__(self):
+        super().__init__("slide-content-quality", severity="error")
+
+    def check(self, context: Dict[str, Any]) -> List[PolicyViolation]:
+        violations = []
+        target_dir: Optional[Path] = context.get("target_dir")
+
+        if not target_dir or not target_dir.exists():
+            return violations
+
+        # Check instructor slides directory
+        slides_dir = target_dir / "instructor" / "slides"
+        if not slides_dir.exists():
+            return violations
+
+        # Use SlideValidator to check all slides
+        content_violations = validate_slides(slides_dir)
+
+        # Convert ContentViolation to PolicyViolation
+        for slide_file, content_violations_list in content_violations.items():
+            for cv in content_violations_list:
+                rel_path = slide_file.relative_to(target_dir)
+                violations.append(
+                    PolicyViolation(
+                        self.rule_id,
+                        self.severity,
+                        f"{cv.message}",
+                        f"{rel_path}:{cv.line}",
+                    )
+                )
+
+        return violations
+
+
 class PolicyEngine:
     """
     Orchestrates policy rule checking.
@@ -325,6 +371,7 @@ class PolicyEngine:
         InstructorSeparationRule,
         ForbiddenPatternsRule,
         NamingConventionRule,
+        SlideContentRule,
     ]
 
     def __init__(self, config: Optional[Dict[str, Any]] = None):

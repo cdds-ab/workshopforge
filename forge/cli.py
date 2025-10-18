@@ -14,6 +14,7 @@ from rich.console import Console
 from rich.markdown import Markdown
 
 from . import __version__
+from .content_validator import validate_slides
 from .generator import WorkshopGenerator, promote_to_student_pack
 from .loader import SpecLoader
 from .orchestrator import AIOrchestrator
@@ -359,6 +360,65 @@ def promote(
         promote_to_student_pack(instructor_dir, student_dir, redaction_list)
         rprint("\n[green]✓ Student pack created![/green]")
         rprint(f"\nOutput: {student_dir}")
+    except Exception as e:
+        rprint(f"[red]Error:[/red] {e}")
+        raise typer.Exit(1)
+
+
+@app.command()
+def validate_content(
+    slides_dir: Path = typer.Argument(
+        ..., help="Directory containing slide Markdown files to validate"
+    ),
+):
+    """
+    Validate slide content against cognitive science principles.
+
+    Checks slides for evidence-based quality violations:
+    - Max 12 lines per code block (chunking principle)
+    - Max 5 bullet points (working memory limit, Cowan 2010)
+    - Max 15 total content lines (coherence principle, CLT)
+    - Split notation format (1/2, 2/2)
+
+    Based on:
+    - Working Memory Capacity: 3-5 items (Cowan, 2010)
+    - Cognitive Load Theory (Sweller et al., 2019)
+    - Mayer's Multimedia Learning principles
+    """
+    slides_dir = slides_dir.resolve()
+
+    if not slides_dir.exists():
+        rprint(f"[red]Error:[/red] Slides directory not found: {slides_dir}")
+        raise typer.Exit(1)
+
+    if not slides_dir.is_dir():
+        rprint(f"[red]Error:[/red] Path is not a directory: {slides_dir}")
+        raise typer.Exit(1)
+
+    rprint(f"[blue]Validating slides in:[/blue] {slides_dir}\n")
+
+    try:
+        violations = validate_slides(slides_dir)
+
+        if not violations:
+            rprint("[green]✓ All slides pass cognitive science validation![/green]")
+            rprint("No content violations found.")
+            return
+
+        # Count total violations
+        total = sum(len(v) for v in violations.values())
+        rprint(f"[red]✗ Found {total} content violation(s)[/red]\n")
+
+        # Print violations by file
+        for slide_file, violations_list in violations.items():
+            rel_path = slide_file.relative_to(slides_dir)
+            rprint(f"[yellow]{rel_path}:[/yellow]")
+            for v in violations_list:
+                rprint(f"  Line {v.line}: [{v.rule}] {v.message}")
+            rprint()
+
+        raise typer.Exit(1)
+
     except Exception as e:
         rprint(f"[red]Error:[/red] {e}")
         raise typer.Exit(1)
