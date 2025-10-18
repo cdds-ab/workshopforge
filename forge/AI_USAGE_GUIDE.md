@@ -2,6 +2,48 @@
 
 This guide helps LLMs (and humans) understand how to effectively use WorkshopForge for creating and maintaining workshop materials.
 
+## ⚠️ CRITICAL: Design Boundaries
+
+**WorkshopForge is a Quality Gate, NOT a Content Creator.**
+
+### What WorkshopForge DOES
+- ✅ **Scaffolding**: Generate workshop structure (READMEs, CI configs, meta-slides)
+- ✅ **Validation**: Check content against policies (structure, naming, cognitive load)
+- ✅ **Policy Enforcement**: Block non-compliant content from being committed
+- ✅ **Spec Management**: YAML-driven single source of truth
+- ✅ **AI Orchestration**: Support spec-driven content adjustments
+
+### What WorkshopForge DOES NOT DO
+- ❌ **Detailed Content Generation**: Does NOT create 800+ line didactic slide decks
+- ❌ **Replace Expertise**: Does NOT write pedagogically rich workshop materials
+- ❌ **Automatic AI Content Pipeline**: Templates are for structure, not learning content
+
+### Correct Mental Model
+```
+┌──────────────────────────────────────────────────────────────┐
+│  Expert/AI Creates Content                                   │
+│  ├── Detailed slides (day1-terraform-basics.md: 800 lines)   │
+│  ├── Lab exercises with solutions                            │
+│  └── Reference materials with examples                       │
+└──────────────────────────────────────────────────────────────┘
+                            ↓
+┌──────────────────────────────────────────────────────────────┐
+│  WorkshopForge Validates & Scaffolds                         │
+│  ├── SlideContentRule checks cognitive load                  │
+│  ├── PolicyEngine enforces quality standards                 │
+│  ├── Generates READMEs, CI configs, meta-slides              │
+│  └── Reports: compliance.md with violations                  │
+└──────────────────────────────────────────────────────────────┘
+```
+
+### Recommended Workflow
+1. **Content Creation**: Expert or AI assistant writes detailed slides/labs
+2. **Validation**: `workshopforge validate-content slides/` → finds violations
+3. **Quality Gate**: Fix violations before committing
+4. **Scaffolding**: `workshopforge generate` → creates structure files
+
+**NEVER expect WorkshopForge templates to generate pedagogically rich content.**
+
 ## Core Principles
 
 ### 1. Spec-First Approach

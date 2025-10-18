@@ -1,8 +1,38 @@
 # WorkshopForge - Kontext-Speicherpunkt
 
-**Datum**: 2025-10-17
-**Status**: Production-ready, AI Usage Guide + Pre-commit Hooks implementiert, Erstes Production Workshop erstellt
+**Datum**: 2025-10-18
+**Status**: Production-ready, Content Validation integriert, Design-Grenzen definiert
 **Repository**: https://github.com/cdds-ab/workshopforge (PUBLIC)
+
+## ⚠️ WICHTIG: Design-Grenzen von WorkshopForge
+
+**Was WorkshopForge IST:**
+- ✅ **Spec-First Framework** für Workshop-Struktur
+- ✅ **Template-basierter Generator** für Scaffolding (READMEs, Configs, Meta-Slides)
+- ✅ **Policy Engine** für Quality Gates und Compliance-Checks
+- ✅ **Content Validator** für evidenzbasierte Qualitätsprüfung (Slides, Labs)
+- ✅ **AI Orchestrator** für spec-getriebene Content-Unterstützung
+
+**Was WorkshopForge NICHT IST:**
+- ❌ **KEIN didaktischer Content-Generator** für detaillierte Unterrichtsmaterialien
+- ❌ **KEINE AI-Content-Pipeline** für vollautomatische Slide-Erstellung
+- ❌ **KEIN Ersatz** für menschliche/KI-Expertise bei inhaltlicher Ausarbeitung
+
+**Architektur-Prinzip:**
+WorkshopForge ist der **Quality Gate**, nicht der **Content Creator**.
+Detaillierte Slides (z.B. `day1-terraform-basics.md` mit 800+ Zeilen didaktischem Inhalt)
+werden von Experten/KI erstellt und dann von WorkshopForge **validiert**.
+
+**Workflow:**
+1. Experte/KI schreibt Inhalte (Slides, Labs) → **Content Creation**
+2. WorkshopForge validiert gegen Policies → **Quality Gate**
+3. WorkshopForge generiert Struktur (README, CI) → **Scaffolding**
+
+**Erkenntnisse aus lab-terraform-basics (2025-10-18):**
+- `slides.md` (180 Zeilen) = WorkshopForge Template ✅
+- `day1-*.md`, `day2-*.md` (800+ Zeilen) = Von Claude geschrieben ✅
+- SlideValidator findet 93 Violations → WorkshopForge als Quality Gate ✅
+- WorkshopForge versucht NICHT, diese Inhalte selbst zu generieren ✅
 
 ## Aktueller Stand
 

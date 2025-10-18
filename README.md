@@ -17,6 +17,27 @@ LLMs "vergessen" Kontext zwischen Sessions. Workshop-Materialien driften auseina
 3. **Policy Gates**: Generierte Inhalte werden vor dem Schreiben gegen Compliance-Regeln geprüft
 4. **Auditierbar**: Alle KI-Operationen werden mit Prompts, Preludes und Diffs protokolliert
 
+### Design-Grenzen: Was WorkshopForge IST und NICHT IST
+
+**WorkshopForge ist ein Quality Gate, kein Content Creator.**
+
+**✅ Was WorkshopForge leistet:**
+- **Struktur-Generierung**: Scaffolding für Workshops (READMEs, CI-Configs, Meta-Slides)
+- **Policy Enforcement**: Automatische Qualitätsprüfung gegen definierte Regeln
+- **Content Validation**: Evidenzbasierte Prüfung von Slides (Kognitionsforschung)
+- **Spec Management**: YAML-basierte Single Source of Truth
+- **AI Orchestration**: Unterstützung für spec-getriebene Content-Anpassungen
+
+**❌ Was WorkshopForge NICHT leistet:**
+- **KEINE vollautomatische Slide-Generierung**: Detaillierte didaktische Inhalte (z.B. 800+ Zeilen Workshop-Slides) werden von Experten/KI erstellt, nicht von Templates
+- **KEIN Ersatz für Fachexpertise**: WorkshopForge validiert Inhalte, erstellt sie aber nicht
+- **KEINE AI-Content-Pipeline**: Templates sind für Scaffolding, nicht für didaktisch aufbereitete Lehrinhalte
+
+**Empfohlener Workflow:**
+1. **Content Creation**: Experte oder KI-Assistant erstellt detaillierte Slides/Labs
+2. **Validation**: WorkshopForge prüft Inhalte gegen Policies (SlideContentRule, etc.)
+3. **Scaffolding**: WorkshopForge generiert Struktur-Dateien (README, CI, Meta-Info)
+
 ## Features
 
 - ✅ **Deterministische Generierung**: Reproduzierbare Ergebnisse aus Specs
