@@ -79,6 +79,9 @@ class WorkshopGenerator:
         self._render_template("repo/README.md.j2", target_dir / "README.md", context)
         self._render_template("repo/COURSE.md.j2", target_dir / "COURSE.md", context)
 
+        # Generate .claude context for AI assistants
+        self._generate_claude_context(target_dir, context)
+
         # Generate labs for each module
         self._generate_labs(target_dir, modules, context)
 
@@ -157,6 +160,23 @@ class WorkshopGenerator:
         self._render_template(
             "repo/instructor/notes/notes.md.j2",
             instructor_dir / "notes" / "notes.md",
+            context,
+        )
+
+    def _generate_claude_context(self, target_dir: Path, context: Dict[str, Any]) -> None:
+        """
+        Generate .claude/CLAUDE.md for AI assistant context.
+
+        Args:
+            target_dir: Output directory
+            context: Template context
+        """
+        claude_dir = target_dir / ".claude"
+        ensure_dir(claude_dir)
+
+        self._render_template(
+            "repo/.claude/CLAUDE.md.j2",
+            claude_dir / "CLAUDE.md",
             context,
         )
 

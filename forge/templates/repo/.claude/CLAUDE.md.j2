@@ -1,0 +1,192 @@
+# CLAUDE.md - {{ workshop.id }}
+
+This file provides guidance to Claude Code when working with this {{ workshop.title }} workshop.
+
+## ⚠️ WorkshopForge-Managed Repository
+
+**This workshop is managed by [WorkshopForge](https://github.com/cdds-ab/workshopforge).**
+
+### Critical: WorkshopForge Design Boundaries
+
+**WorkshopForge is a Quality Gate, NOT a Content Creator.**
+
+✅ **What WorkshopForge does:**
+- Scaffolding: Generate structure (READMEs, CI configs, meta-slides)
+- Validation: Check content against policies (cognitive load, naming, structure)
+- Policy Enforcement: Block non-compliant content
+- Spec Management: YAML-driven single source of truth
+
+❌ **What WorkshopForge does NOT do:**
+- Generate detailed didactic content (800+ line slide decks)
+- Replace pedagogical expertise
+- Automatic AI content pipeline for learning materials
+
+**Your role as AI assistant:**
+1. **Content Creation**: Write detailed slides, labs, exercises (WorkshopForge validates these)
+2. **Spec Updates**: Modify `spec/*.yml` when structure changes
+3. **Quality Fixes**: Fix violations reported by `workshopforge validate-content`
+4. **Never bypass**: Always use WorkshopForge commands for generation/validation
+
+## Project Overview
+
+**{{ workshop.title }}** - {{ workshop.audience }}
+
+**Duration**: {{ workshop.duration.groups }} groups, {{ workshop.duration.sessions_per_group }} sessions each, {{ workshop.duration.session_minutes }} minutes per session
+**AI Usage Policy**: {{ workshop.policy.student_ai_usage }}
+
+## Build Commands
+
+```bash
+# Validate workshop specs
+workshopforge validate
+
+# Generate workshop structure from specs
+workshopforge generate --target out/instructor
+
+# Validate slide content (cognitive science rules)
+workshopforge validate-content out/instructor/instructor/slides
+
+# AI operations (spec-driven enhancements)
+workshopforge ai plan --goal "your enhancement goal"
+workshopforge ai apply --goal "your enhancement goal"
+workshopforge ai check --target-dir out/instructor
+
+# Create student version (removes instructor materials)
+workshopforge promote out/instructor out/student
+```
+
+## Architecture
+
+### Spec-First Approach
+Everything derives from `spec/` directory:
+- `workshop.yml` - Core metadata, duration, audience
+- `modules.yml` - Learning modules with objectives and deliverables
+- `profile.yml` - Generation settings
+- `project.md` - Storyline and pedagogical approach
+- `ai_guidelines.md` - Content standards and constraints
+
+### Generated Structure
+WorkshopForge generates `out/instructor/` from specs:
+- `labs/` - Hands-on exercises
+- `instructor/slides/` - Presentation materials
+- `instructor/notes/` - Instructor guides
+- `reference/` - Cheatsheets and reference materials
+- `.github/workflows/` - CI configuration
+
+## Modules
+
+{% for module in modules %}
+### {{ loop.index }}. {{ module.title | default(module.id) }} ({{ module.duration_minutes }}min)
+
+**Objective**: {{ module.objective }}
+
+**Deliverables**:
+{% for deliverable in module.deliverables %}
+- `{{ deliverable }}`
+{% endfor %}
+
+{% if module.depends_on %}
+**Depends on**: {{ module.depends_on | join(', ') }}
+{% endif %}
+
+---
+
+{% endfor %}
+
+## Working with Content
+
+### Content Creation Workflow
+
+**When creating detailed slides/labs:**
+1. **Write content** - Create pedagogically rich materials
+2. **Validate** - `workshopforge validate-content out/instructor/instructor/slides`
+3. **Fix violations** - Address cognitive load issues (max 12 lines code, 5 bullets, 15 lines total)
+4. **Check policies** - `workshopforge ai check --target-dir out/instructor`
+
+**NEVER expect WorkshopForge templates to generate detailed content!**
+Templates are for scaffolding (README, CI). You write the slides/labs.
+
+### Updating Workshop Structure
+
+```bash
+# 1. Edit specs
+vim spec/modules.yml
+
+# 2. Validate
+workshopforge validate
+
+# 3. Regenerate structure
+workshopforge generate --target out/instructor
+
+# 4. Update content (manual or AI-assisted)
+# Your job: write detailed materials
+
+# 5. Validate content quality
+workshopforge validate-content out/instructor/instructor/slides
+
+# 6. Check compliance
+workshopforge ai check --target-dir out/instructor
+```
+
+### Slide Content Rules (Evidence-Based)
+
+**Cognitive Science Constraints:**
+- **Max 12 lines** per code block (chunking principle, Cowan 2010)
+- **Max 5 bullet points** per slide (working memory limit)
+- **Max 15 total content lines** per slide (coherence principle, Sweller et al. 2019)
+- **Split notation** for long content: `## Title (1/2)`, `## Title (2/2)`
+
+**Rationale:**
+- Working Memory: 3-5 items for adults (Cowan, 2010)
+- Cognitive Load Theory (Sweller et al., 2019)
+- Mayer's Multimedia Learning principles
+
+Violations will be caught by `workshopforge validate-content`.
+
+## Common Tasks
+
+### "Add a new module"
+1. Add module definition to `spec/modules.yml`
+2. Run `workshopforge generate --target out/instructor`
+3. Create detailed content in generated directories
+4. Validate: `workshopforge validate-content ...`
+
+### "Update slides"
+1. Edit Markdown slides in `out/instructor/instructor/slides/`
+2. Validate: `workshopforge validate-content out/instructor/instructor/slides`
+3. Fix violations (split long code blocks, reduce bullets)
+4. Re-validate until passing
+
+### "Fix compliance errors"
+1. Run `workshopforge ai check --target-dir out/instructor`
+2. Read `reports/compliance.md`
+3. Update specs or content to fix violations
+4. Regenerate if structure changed
+
+### "Create deliverable package"
+```bash
+workshopforge generate --target out/instructor
+workshopforge validate-content out/instructor/instructor/slides
+workshopforge promote out/instructor out/student
+# Package for distribution
+```
+
+## Notes for AI Assistants
+
+- **Always use specs as source of truth**: Update `spec/*.yml` for structural changes
+- **You create detailed content**: WorkshopForge validates, doesn't generate
+- **Follow cognitive rules**: Slides must pass content validation
+- **Use WorkshopForge commands**: Don't bypass the tool
+- **Check compliance regularly**: `workshopforge ai check` before committing
+
+## Related Resources
+
+- **WorkshopForge Repository**: https://github.com/cdds-ab/workshopforge
+- **AI Usage Guide**: Run `workshopforge ai usage-prompt` for detailed guidance
+- **Specs Directory**: `spec/` contains all workshop configuration
+
+---
+
+**Generated by WorkshopForge {{ generated_at }}**
+**Version**: 0.1.0
+**Last Context Update**: Run `workshopforge update-context` to refresh this file
