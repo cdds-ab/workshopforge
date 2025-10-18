@@ -1,0 +1,34 @@
+#!/bin/bash
+#
+# Git hook: prepare-commit-msg
+# Reminds AI assistant to update .claude/context.md before committing
+#
+# This hook is part of WorkshopForge's AI-assistant workflow.
+# Install with: cp .git-hooks/prepare-commit-msg .git/hooks/
+#
+
+COMMIT_MSG_FILE=$1
+COMMIT_SOURCE=$2
+
+# Only run for regular commits (not merge, squash, etc.)
+if [ -z "$COMMIT_SOURCE" ]; then
+    # Check if context.md was modified in this commit
+    if ! git diff --cached --name-only | grep -q "^.claude/context.md$"; then
+        # Context not updated - add reminder to commit message
+        cat <<EOF >> "$COMMIT_MSG_FILE"
+
+# ⚠️  REMINDER: Update .claude/context.md
+#
+# Before committing, consider updating .claude/context.md with:
+# - What changed in this commit
+# - Current workshop status
+# - Any new TODOs or known issues
+#
+# This helps maintain session continuity for AI assistants.
+#
+# To update: Edit .claude/context.md, then amend this commit:
+#   git add .claude/context.md
+#   git commit --amend
+EOF
+    fi
+fi

@@ -165,7 +165,7 @@ class WorkshopGenerator:
 
     def _generate_claude_context(self, target_dir: Path, context: Dict[str, Any]) -> None:
         """
-        Generate .claude/CLAUDE.md for AI assistant context.
+        Generate .claude/CLAUDE.md for AI assistant context and install git hooks.
 
         Args:
             target_dir: Output directory
@@ -179,6 +179,44 @@ class WorkshopGenerator:
             claude_dir / "CLAUDE.md",
             context,
         )
+
+        # Install git hooks for AI workflow support
+        self._install_git_hooks(target_dir)
+
+    def _install_git_hooks(self, target_dir: Path) -> None:
+        """
+        Install git hooks for AI-assisted workflow.
+
+        Copies hooks from .git-hooks/ template directory to .git/hooks/
+        and makes them executable. Only installs if .git/ directory exists.
+
+        Args:
+            target_dir: Workshop root directory
+        """
+        import shutil
+        import stat
+
+        git_dir = target_dir / ".git"
+        hooks_src = self.template_dir / "repo" / ".git-hooks"
+
+        # Only install if git repository exists
+        if not git_dir.exists() or not git_dir.is_dir():
+            return
+
+        hooks_dest = git_dir / "hooks"
+        ensure_dir(hooks_dest)
+
+        # Copy all hook files from template
+        if hooks_src.exists():
+            for hook_file in hooks_src.glob("*"):
+                if hook_file.is_file() and hook_file.name != "README.md":
+                    dest_file = hooks_dest / hook_file.name
+                    shutil.copy2(hook_file, dest_file)
+
+                    # Make executable
+                    dest_file.chmod(
+                        dest_file.stat().st_mode | stat.S_IXUSR | stat.S_IXGRP | stat.S_IXOTH
+                    )
 
     def _generate_ci(self, target_dir: Path, context: Dict[str, Any]) -> None:
         """
